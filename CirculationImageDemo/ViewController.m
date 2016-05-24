@@ -35,12 +35,14 @@
     //添加分页控件
     [self addPageControl];
     
-    [_collectionView setContentOffset:CGPointMake(CGRectGetWidth(self.collectionView.frame), 0) animated:NO];
-    
-    _leftImageIndex = 0;
-    _currentImageIndex = 1;
+    _leftImageIndex = _imagesArray.count - 1;
+    _currentImageIndex = 0;
     // 当只有两张图片时，左右页都显示最后一张的图片，防止崩溃
-    _rightImageIndex = _imagesArray.count == 2 ? 0 : 2;
+    _rightImageIndex = _imagesArray.count == 2 ? _leftImageIndex : _currentImageIndex + 1;
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [_collectionView setContentOffset:CGPointMake(CGRectGetWidth(self.collectionView.frame), 0) animated:NO];
+    });
 }
 
 - (void)didReceiveMemoryWarning {
