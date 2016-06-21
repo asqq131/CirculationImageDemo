@@ -37,12 +37,12 @@
     
     _leftImageIndex = _imagesArray.count - 1;
     _currentImageIndex = 0;
+//    [self reloadImage];
     // 当只有两张图片时，左右页都显示最后一张的图片，防止崩溃
     _rightImageIndex = _imagesArray.count == 2 ? _leftImageIndex : _currentImageIndex + 1;
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [_collectionView setContentOffset:CGPointMake(CGRectGetWidth(self.collectionView.frame), 0) animated:NO];
-    });
+    _collectionView.contentSize = CGSizeMake(kScreenSize.width * 2, CGRectGetHeight(_collectionView.frame));
+    [_collectionView setContentOffset:CGPointMake(kScreenSize.width, 0) animated:NO];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -110,8 +110,6 @@
     [self reloadImage];
     //移动到中间
     [scrollView setContentOffset:CGPointMake(CGRectGetWidth(self.collectionView.frame), 0) animated:NO];
-    
-    [_collectionView reloadData];
     
     //设置分页
     _pageControl.currentPage = _currentImageIndex;
